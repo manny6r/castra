@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Download — Castra</title>
+<meta name="description" content="Your Castra download is starting.">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#06070a">
+<link rel="icon" href="../assets/logo.svg" type="image/svg+xml">
+<link rel="icon" href="../assets/favicon.ico" sizes="any">
+<link rel="preload" href="../assets/SchibstedGrotesk.ttf" as="font" type="font/ttf" crossorigin>
+<link rel="stylesheet" href="../assets/site.css?v=11">
+<!-- without JavaScript: the current installer after a moment -->
+<noscript><meta http-equiv="refresh" content="1; url=https://github.com/manny6r/castra/releases/download/v2.0.1/Castra_Setup_v2.0.1.exe"></noscript>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <mask id="cMask" maskUnits="userSpaceOnUse" x="0" y="0" width="40" height="40">
+      <path d="M29.9 12.5A12 12 0 1 0 29.9 27.5" fill="none" stroke="#fff" stroke-width="4.2" stroke-linecap="round"/>
+    </mask>
+    <symbol id="logo" viewBox="0 0 40 40">
+      <path class="lg-t" d="M29.9 12.5A12 12 0 1 0 29.9 27.5"/>
+      <path class="lg-r" mask="url(#cMask)" pathLength="100" d="M32 20A12 12 0 1 1 8 20A12 12 0 1 1 32 20"/>
+      <rect class="lg-c" x="16.5" y="16.5" width="7" height="7" rx="1.6"/>
+    </symbol>
+    <symbol id="i-book" viewBox="0 0 24 24"><path d="M5 4.5A1.5 1.5 0 0 1 6.5 3H19v15H6.5A1.5 1.5 0 0 0 5 19.5z"/><path d="M5 19.5A1.5 1.5 0 0 0 6.5 21H19v-3"/></symbol>
+    <symbol id="i-again" viewBox="0 0 24 24"><path d="M4.5 12a7.5 7.5 0 1 0 2.2-5.3"/><path d="M4.5 4.5v4h4"/></symbol>
+  </defs>
+</svg>
+
+<header class="top wrap">
+  <a class="brand" href="../" aria-label="Castra — home"><span class="logo"><svg><use href="#logo"/></svg></span><span class="word">CASTRA<i>.</i></span></a>
+</header>
+
+<main class="prose wrap dl-page">
+  <h1>Your download is starting.</h1>
+  <p>When it has finished, run the installer. New to Castra? The manual walks you through your first setup.</p>
+  <div class="actions">
+    <a class="btn primary" href="../manual/#start"><svg><use href="#i-book"/></svg>Start in 60 seconds</a>
+    <a class="btn quiet" href="./" id="again"><svg><use href="#i-again"/></svg>Download again</a>
+  </div>
+  <p class="ext-line"><a href="https://chromewebstore.google.com/detail/bgficbafjifdhlidbehldcppljnfdbnh" target="_blank" rel="noopener">Optional browser extension</a> for Chrome, Edge and Brave — per-tab volume, zoom that sticks and auto sign-in.</p>
+</main>
+
+<footer class="edge">
+  <div class="brand small"><span class="logo"><svg><use href="#logo"/></svg></span><span>© 2026 Castra</span></div>
+  <nav aria-label="More"><a href="../">Home</a><a href="../manual/">Manual</a><a href="../privacy/">Privacy</a><a href="https://chromewebstore.google.com/detail/bgficbafjifdhlidbehldcppljnfdbnh" target="_blank" rel="noopener">Browser extension</a></nav>
+</footer>
+
+<script>
+/* the newest installer itself: the browser downloads it and this page stays */
+(() => {
+  const REPO = "manny6r/castra";
+  const CURRENT = "https://github.com/manny6r/castra/releases/download/v2.0.1/Castra_Setup_v2.0.1.exe";
+  const go = url => { location.replace(url); };
+  fetch(`https://api.github.com/repos/${REPO}/releases/latest`)
+    .then(r => (r.ok ? r.json() : null))
+    .then(d => {
+      const a = d && (d.assets || []).find(x => /\.exe$/i.test(x.name));
+      go(a ? a.browser_download_url : CURRENT);
+    })
+    .catch(() => go(CURRENT));
+})();
+</script>
+</body>
+</html>

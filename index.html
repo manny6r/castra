@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Castra — workspace launcher for Windows</title>
+<meta name="description" content="Castra opens your apps, websites and tools — each on its own display, at its own size and spot. One click. Free for Windows 10 and 11.">
+<meta name="theme-color" content="#06070a">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Castra — one click, every window in its place">
+<meta property="og:description" content="A workspace launcher for Windows: your apps and websites open on the right display, in the right spot. Free.">
+<meta property="og:image" content="https://manualcockpitkiller.com/assets/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="assets/logo.svg" type="image/svg+xml">
+<link rel="icon" href="assets/favicon.ico" sizes="any">
+<link rel="preload" href="assets/SchibstedGrotesk.ttf" as="font" type="font/ttf" crossorigin>
+<link rel="stylesheet" href="assets/site.css?v=11">
+<script>document.documentElement.classList.add("js")</script>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <mask id="cMask" maskUnits="userSpaceOnUse" x="0" y="0" width="40" height="40">
+      <path d="M29.9 12.5A12 12 0 1 0 29.9 27.5" fill="none" stroke="#fff" stroke-width="4.2" stroke-linecap="round"/>
+    </mask>
+    <symbol id="logo" viewBox="0 0 40 40">
+      <path class="lg-t" d="M29.9 12.5A12 12 0 1 0 29.9 27.5"/>
+      <path class="lg-r" mask="url(#cMask)" pathLength="100" d="M32 20A12 12 0 1 1 8 20A12 12 0 1 1 32 20"/>
+      <rect class="lg-c" x="16.5" y="16.5" width="7" height="7" rx="1.6"/>
+    </symbol>
+    <symbol id="i-dl" viewBox="0 0 24 24"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></symbol>
+    <symbol id="i-play" viewBox="0 0 24 24"><path d="M8 5.5v13l11-6.5z" fill="currentColor" stroke="none"/></symbol>
+    <symbol id="i-x" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></symbol>
+    <symbol id="i-web" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></symbol>
+    <symbol id="i-puzzle" viewBox="0 0 24 24"><path d="M9 4.5a2 2 0 0 1 4 0V6h4a1 1 0 0 1 1 1v4h1.5a2 2 0 0 1 0 4H18v4a1 1 0 0 1-1 1h-4v-1.5a2 2 0 0 0-4 0V20H5a1 1 0 0 1-1-1v-4h1.5a2 2 0 0 0 0-4H4V7a1 1 0 0 1 1-1h4z"/></symbol>
+    <symbol id="i-book" viewBox="0 0 24 24"><path d="M5 4.5A1.5 1.5 0 0 1 6.5 3H19v15H6.5A1.5 1.5 0 0 0 5 19.5z"/><path d="M5 19.5A1.5 1.5 0 0 0 6.5 21H19v-3"/></symbol>
+  </defs>
+</svg>
+
+<!-- the title, written on the wall above the desk -->
+<header class="title wrap">
+  <div class="brand"><span class="logo"><svg><use href="#logo"/></svg></span><span class="word">CASTRA<i>.</i></span></div>
+  <h1>One click.<br>Every window<br>in its place.</h1>
+  <div class="offer">
+    <p class="lead">Castra opens your apps, websites and tools — each on its own display, at its own size and spot.</p>
+    <div class="actions">
+      <a class="btn primary dl" href="download/"><svg><use href="#i-dl"/></svg>Download for Windows</a>
+      <a class="btn quiet watch" href="assets/tour.mp4"><svg><use href="#i-play"/></svg>Watch the tour <span class="len">3:25</span></a>
+    </div>
+  </div>
+</header>
+
+<!-- the desk: Castra on 01 presses LAUNCH ALL, the windows land one by one -->
+<figure class="room" aria-labelledby="room-cap">
+  <figcaption id="room-cap" class="vh">Example: three displays on a desk. Castra on display 01 presses Launch all and five windows open one by one: OBS Studio and Stream chat on 01, Stats dashboard on 02, YouTube live and Discord on 03. The example repeats every few seconds.</figcaption>
+  <div class="rig" id="rig">
+    <svg class="kbd" viewBox="0 0 400 120" aria-hidden="true"><rect class="kb" x="2" y="2" width="396" height="116" rx="10"/><g class="keys"></g></svg>
+    <span class="mouse" aria-hidden="true"></span>
+    <svg class="cur" id="cur" viewBox="0 0 26 26" aria-hidden="true"><path d="M3 2 L3 21 L8.2 16.4 L11.6 24 L15 22.5 L11.7 15.1 L18.5 15.1 Z" fill="#fff" stroke="#0b0d12" stroke-width="1.6" stroke-linejoin="round"/></svg>
+  </div>
+</figure>
+
+<main>
+<!-- the app itself: display 01 up close; point at a part and it is lit and named, as in the manual -->
+<section class="app-close wrap" aria-labelledby="app-h">
+  <h2 id="app-h">Your whole setup in one window.</h2>
+  <p class="hint">Point at any part of the window to see what it is.</p>
+  <div class="tour-app">
+    <figure class="screen wide" style="--c:var(--violet)">
+      <div class="glass" id="appShot">
+        <img src="assets/castra-app.webp" width="2480" height="1560" loading="lazy" decoding="async"
+          alt="The Castra app: profile tabs at the top, a 3D map of the displays on the left, the workspaces on the right, and Put back, Close all and Launch all at the bottom">
+        <div class="focus" id="appFocus"></div>
+        <div class="ftag" id="appTag" aria-hidden="true"><b></b><span></span></div>
+      </div>
+    </figure>
+    <ol class="legend" id="appLegend">
+      <li><button type="button" data-spot="profiles"><span class="num">1</span><span><b>Profiles</b><small>A setup for every occasion. Switch with one click.</small></span></button></li>
+      <li><button type="button" data-spot="map"><span class="num">2</span><span><b>Display map</b><small>All your displays in 3D, every window to scale.</small></span></button></li>
+      <li><button type="button" data-spot="list"><span class="num">3</span><span><b>Workspaces</b><small>Apps, websites, commands. Drag them into launch order.</small></span></button></li>
+      <li><button type="button" data-spot="back"><span class="num">4</span><span><b>Put back · Close all</b><small>Send every window home, or close the whole profile at once.</small></span></button></li>
+      <li><button type="button" data-spot="launch-all"><span class="num">5</span><span><b>Launch all</b><small>Opens the whole profile, one by one.</small></span></button></li>
+    </ol>
+  </div>
+</section>
+<!-- the browser extension: the browser up close, its mixer open (the same picture as in the manual) -->
+<section class="ext wrap" aria-labelledby="ext-h">
+  <div class="ext-copy">
+    <h2 id="ext-h">The browser, under control.</h2>
+    <ul class="ext-list">
+      <li><b>A volume mixer</b> for every tab that plays sound.</li>
+      <li><b>Volume on top of the site's own</b> — a player at 50% with Castra at 40% plays at 20%.</li>
+      <li><b>Zoom that sticks,</b> even after a browser restart.</li>
+      <li><b>Auto sign-in</b> for the workspaces where you switch it on.</li>
+    </ul>
+    <div class="actions">
+      <a class="btn primary" href="https://chromewebstore.google.com/detail/bgficbafjifdhlidbehldcppljnfdbnh" target="_blank" rel="noopener"><svg><use href="#i-puzzle"/></svg>Add to Chrome</a>
+    </div>
+    <p class="note">Works in Chrome, Edge and Brave. Optional — Castra runs without it.</p>
+  </div>
+  <figure class="xb">
+    <div class="xb-win" aria-hidden="true">
+      <div class="xb-tabs"><span class="t"><i></i>YouTube live</span><svg viewBox="0 0 36 9"><path d="M2 4.5h6M15 1.5h6v6h-6zM28 1.5l6 6M34 1.5l-6 6"/></svg></div>
+      <div class="xb-tool"><span class="url">youtube.com/@yourchannel/live</span><span class="ext-icon"><span class="logo"><svg><use href="#logo"/></svg></span></span></div>
+      <div class="xb-page"><i class="video"></i><i class="ln"></i><i class="ln s"></i></div>
+    </div>
+    <img class="xb-popup" src="assets/popup.webp" width="680" height="1020" loading="lazy" decoding="async"
+      alt="The Castra mixer in the browser toolbar: YouTube live — Match day at 20% volume, with Stream chat and a radio tab below">
+  </figure>
+</section>
+
+<!-- the close, on the desk -->
+<section class="close" aria-labelledby="close-h">
+  <div class="wrap">
+    <h2 id="close-h">Your setup, one click away.</h2>
+    <div class="actions">
+      <a class="btn primary dl" href="download/"><svg><use href="#i-dl"/></svg>Download for Windows</a>
+      <a class="btn quiet" href="manual/"><svg><use href="#i-book"/></svg>Read the manual</a>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="brand small"><span class="logo"><svg><use href="#logo"/></svg></span><span>© <span class="year">2026</span> Castra</span></div>
+  <nav aria-label="More"><a href="manual/">Manual</a><a href="privacy/">Privacy</a><a href="https://chromewebstore.google.com/detail/bgficbafjifdhlidbehldcppljnfdbnh" target="_blank" rel="noopener">Browser extension</a></nav>
+</footer>
+
+<!-- the tour, opened by "Watch the tour" -->
+<dialog class="tour" id="tour" aria-label="The Castra tour, 3 minutes 25 seconds">
+  <button class="x" type="button" aria-label="Close the video"><svg><use href="#i-x"/></svg></button>
+  <video controls preload="none" poster="assets/tour-poster.jpg" playsinline>
+    <source src="assets/tour.mp4" type="video/mp4">
+    <track kind="captions" src="assets/tour.vtt" srclang="en" label="English" default>
+  </video>
+</dialog>
+
+<script src="assets/site.js?v=11"></script>
+</body>
+</html>

@@ -1,0 +1,866 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="color-scheme" content="dark">
+<meta name="theme-color" content="#06070a">
+<title>Manual — Castra</title>
+<meta name="description" content="How to use Castra: add your apps and websites, place them on your displays and launch everything with one click.">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%23a6f5cf'/%3E%3Cstop offset='.45' stop-color='%233ee89b'/%3E%3Cstop offset='1' stop-color='%2314b8a6'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='40' height='40' rx='12' fill='url(%23g)'/%3E%3Cpath d='M29.9 12.5A12 12 0 1 0 29.9 27.5' fill='none' stroke='%2303170d' stroke-width='4.2' stroke-linecap='round'/%3E%3Crect x='16.5' y='16.5' width='7' height='7' rx='1.6' fill='%2303170d'/%3E%3C/svg%3E">
+<link rel="preload" href="fonts/SchibstedGrotesk.ttf" as="font" type="font/ttf" crossorigin>
+<style>
+/* Castra manual — the website's world, set for reading: matte black wall, one mint light,
+   1px rings and black shadows. A contents rail on the left; on phones it opens from a button. */
+@font-face{font-family:"Schibsted Grotesk";src:url("fonts/SchibstedGrotesk.ttf") format("truetype");font-weight:400 900;font-display:swap}
+:root{
+  --bg:#06070a; --desk:#0b0c10; --bezel:#111318; --plate:#0d0f14;
+  --line:rgba(255,255,255,.08); --line-2:rgba(255,255,255,.14);
+  --text:#eef0f5; --soft:#c9ced8; --prose:#a9afbb; --muted:#8b92a1; --dim:#737a8a;
+  --accent:#3ee89b; --mint:#a6f5cf; --teal:#14b8a6; --ink:#03170d;
+  --blue:#5b9dff; --violet:#a78bfa; --green:#4ade80; --amber:#ffb224;
+  --out:cubic-bezier(.16,1,.3,1);                        /* exponential ease-out */
+  --max:1240px; --rail:212px;
+  --top:clamp(22px,3.4vh,40px); --drop:clamp(44px,7.5vh,80px);
+  color-scheme:dark; interpolate-size:allow-keywords;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%;scrollbar-color:#262a33 var(--bg);scroll-padding-top:24px}
+@media (prefers-reduced-motion:no-preference){html{scroll-behavior:smooth}}
+body{background:var(--bg);color:var(--text);font:17px/1.55 "Schibsted Grotesk","Segoe UI",system-ui,sans-serif;
+  -webkit-font-smoothing:antialiased;overflow-x:hidden;caret-color:var(--accent)}
+img,svg{display:block;max-width:100%}
+img{height:auto}
+a{color:inherit;text-decoration:none}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+::selection{background:var(--accent);color:var(--ink)}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:6px}
+::-webkit-scrollbar{width:12px;height:12px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:#22252d;border:3px solid var(--bg);border-radius:8px}
+.skip{position:fixed;left:16px;top:12px;z-index:60;padding:10px 14px;border-radius:11px;background:var(--plate);box-shadow:inset 0 0 0 1px var(--line-2);
+  font-size:14px;font-weight:700;color:var(--soft);transform:translateY(-160%)}
+.skip:focus{transform:none}
+.i{width:19px;height:19px;flex:none;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+
+/* ── type ─────────────────────────────────────────────────── */
+.vh{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}   /* read out, not shown */
+h2{font-size:clamp(30px,3vw,42px);line-height:1.06;letter-spacing:-.03em;font-weight:800;text-wrap:balance}
+h3{font-size:22px;line-height:1.2;letter-spacing:-.01em;font-weight:800}
+p,li{text-wrap:pretty}
+b{font-weight:700;color:var(--text)}
+.lead{color:var(--prose);font-size:clamp(17px,1.45vw,20px);line-height:1.5}
+.tx{color:var(--prose);line-height:1.65}
+main :is(p,li) a:not(.btn){color:var(--text);font-weight:700;text-decoration:underline;text-decoration-thickness:1px;
+  text-decoration-color:rgba(62,232,155,.7);text-underline-offset:4px;transition:text-decoration-color .3s}
+main :is(p,li) a:not(.btn):hover{text-decoration-color:var(--accent)}
+code{font-family:ui-monospace,"Cascadia Mono",Consolas,monospace;font-size:14px;padding:2px 6px;border-radius:6px;
+  background:rgba(255,255,255,.06);box-shadow:inset 0 0 0 1px var(--line);overflow-wrap:anywhere}
+
+/* ── logo: the app's "C"; a line runs round through the gate ── */
+.logo{display:inline-block;flex:none;border-radius:28%;background:linear-gradient(145deg,var(--mint),var(--accent) 45%,var(--teal));
+  box-shadow:0 3px 8px -3px rgba(0,0,0,.7)}
+.logo svg{width:100%;height:100%;overflow:visible}
+.lg-t{fill:none;stroke:#03170d;stroke-width:4.2;stroke-linecap:round;opacity:.16}
+.lg-r{fill:none;stroke:#03170d;stroke-width:4.2;stroke-linecap:round;stroke-dasharray:100 100;animation:cRun 13s linear infinite}
+.lg-c{fill:#03170d}
+@keyframes cRun{0%{stroke-dashoffset:100}23.08%,76.92%{stroke-dashoffset:0}100%{stroke-dashoffset:-100}}
+.brand{display:inline-flex;align-items:center;gap:12px}
+.brand .logo{width:34px;height:34px;border-radius:10px}
+.word{font-size:14px;font-weight:700;letter-spacing:.28em;white-space:nowrap;transition:color .3s}
+.word i{font-style:normal;color:var(--accent);letter-spacing:0}
+a.brand:hover .word{color:#fff}
+
+/* ── buttons ──────────────────────────────────────────────── */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;height:54px;padding:0 24px;border-radius:14px;
+  font-size:16px;font-weight:700;letter-spacing:.02em;white-space:nowrap;transition:transform .5s var(--out),box-shadow .5s var(--out),border-color .3s,background-color .3s}
+.btn.primary{color:var(--ink);background:linear-gradient(135deg,var(--mint),var(--accent) 42%,var(--teal));box-shadow:0 10px 20px -12px rgba(0,0,0,.9)}
+.btn.primary:hover{transform:translateY(-2px);box-shadow:0 16px 28px -14px rgba(0,0,0,.95)}
+.btn.primary:active{transform:translateY(0);transition-duration:.1s}
+
+/* ── the page: a contents rail beside the reading column ──── */
+.wrap{width:min(var(--max),calc(100% - 48px));margin:0 auto}
+.doc{display:grid;grid-template-columns:var(--rail) minmax(0,1fr);column-gap:56px;align-items:start}
+.rail{position:sticky;top:0;z-index:2;max-height:100vh;max-height:100dvh;display:flex;flex-direction:column;padding:var(--top) 0 24px}
+.mast{display:flex;align-items:center;gap:14px;flex:none}
+.mast .brand{padding:5px 0;margin:-5px 0}                   /* a 44 px target around the 34 px mark */
+.crumb{display:inline-flex;align-items:center;height:18px;padding-left:14px;box-shadow:inset 1px 0 0 var(--line-2);
+  font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.toc{margin-top:var(--drop);min-height:0;display:flex;flex-direction:column}
+.toc-h{flex:none;margin:0 0 12px 18px;font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--dim)}
+.toc-btn{display:none}
+/* the list is a popover on phones; here it simply stands in the rail */
+.toc-list{display:block;position:relative;inset:auto;width:auto;height:auto;margin:0;padding:0;border:0;background:none;color:inherit;
+  overflow:auto;list-style:none;scrollbar-width:none}
+.toc-list::before{content:"";position:absolute;left:0;top:0;bottom:0;width:1px;background:var(--line)}   /* the track */
+.toc-list a{position:relative;display:block;padding:6px 8px 6px 18px;font-size:15px;font-weight:600;line-height:1.35;color:var(--muted);transition:color .3s}
+.toc-list a::before{content:"";position:absolute;left:0;top:7px;bottom:7px;width:2px;background:var(--accent);opacity:0;transition:opacity .45s var(--out)}
+.toc-list a:hover{color:var(--soft)}
+.toc-list a[aria-current]{color:var(--text)}
+.toc-list a[aria-current]::before{opacity:1}                                  /* the section being read is lit */
+main{container:doc/inline-size;min-width:0;padding-top:calc(var(--top) + 34px + var(--drop))}
+
+/* ── sections: a hairline, the heading, a lead, then the matter ── */
+.sec{margin-top:clamp(64px,9vh,96px);padding-top:44px;border-top:1px solid var(--line)}
+.sec:first-of-type{margin-top:0;padding-top:0;border-top:0}   /* the first one opens the page */
+.sec > .lead{margin-top:14px;max-width:58ch}
+.sec > :not(h2,.lead){margin-top:clamp(28px,4.4vh,44px)}
+.sec > :not(h2,.lead) ~ :not(h2,.lead){margin-top:clamp(36px,5vh,52px)}
+
+/* figures: the real app shown as display 01 up close sits in its bezel; dialogs and crops get a ring */
+.shot{position:relative;padding:10px;border-radius:14px;background:var(--bezel);
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.06),0 24px 48px -24px rgba(0,0,0,.9)}
+.shot img{width:100%;border-radius:5px}
+.fig img,.crop{border-radius:12px;box-shadow:0 0 0 1px rgba(255,255,255,.1),0 24px 48px -24px rgba(0,0,0,.9)}
+.fig.cap img{max-width:min(100%,var(--w,560px));margin:0 auto}
+
+/* numbered plates: outlined; only what is lit is filled */
+.num{width:28px;height:26px;flex:none;border-radius:9px;display:grid;place-items:center;font-size:13px;font-weight:800;color:var(--soft);
+  font-variant-numeric:tabular-nums;box-shadow:inset 0 0 0 1px var(--line-2);transition:background-color .3s,color .3s,box-shadow .3s}
+.on > .num{background:var(--accent);color:var(--ink);box-shadow:none}
+
+/* a parts list: a box, a name, a line of detail, hairlines between */
+.parts{list-style:none;border-top:1px solid var(--line)}
+.parts li{display:grid;grid-template-columns:38px minmax(0,1fr);column-gap:16px;align-items:start;padding:14px 0;border-bottom:1px solid var(--line)}
+.parts b,.sets b{display:block;font-size:16px;line-height:1.35}
+.parts small,.sets small{display:block;margin-top:3px;font-size:15px;line-height:1.5;color:var(--muted)}
+.box{width:38px;height:32px;border-radius:9px;display:inline-flex;align-items:center;justify-content:center;flex:none;color:var(--soft);box-shadow:inset 0 0 0 1px var(--line-2)}
+.box svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.points{padding-left:20px;display:flex;flex-direction:column;gap:10px;color:var(--prose);line-height:1.6;max-width:60ch}
+.points li::marker{color:var(--accent)}
+
+/* ── start: three steps ───────────────────────────────────── */
+.steps{list-style:none;counter-reset:step;display:grid;grid-template-columns:minmax(0,1fr);gap:44px}
+.steps > li{counter-increment:step;display:flex;flex-direction:column}
+.steps h3{display:flex;align-items:center;gap:14px}
+.steps h3::before{content:counter(step);width:38px;height:38px;flex:none;border-radius:10px;display:grid;place-items:center;font-size:16px;font-weight:800;
+  color:var(--soft);box-shadow:inset 0 0 0 1px var(--line-2);font-variant-numeric:tabular-nums;letter-spacing:0}
+.steps p{margin-top:10px;color:var(--muted);font-size:16px;line-height:1.5}
+.steps figure{margin-top:20px}
+.steps .fig img{max-width:min(100%,360px)}
+/* step 3 is the real bottom bar, cut from the app; Launch all is pressed once when it comes into view */
+.key{position:relative;max-width:min(100%,400px)}
+.crop{display:block;position:relative;overflow:hidden;aspect-ratio:780/186}
+.crop img{position:absolute;max-width:none;width:317.949%;left:-216.667%;top:-731.183%;border-radius:0;box-shadow:none}
+.key::after{content:"";position:absolute;inset:23.656% 6.154% 22.581% 46.154%;border-radius:5.4%/20%;border:2px solid var(--mint);opacity:0;pointer-events:none}
+.key.pressed::after{animation:press .8s var(--out)}
+@keyframes press{from{opacity:1;transform:scale(1)}to{opacity:0;transform:scale(1.28)}}
+
+/* ── tour: the real window; point at a part and it is lit and named ── */
+.screen{position:relative;overflow:hidden;border-radius:5px}
+.screen img{border-radius:0}
+.focus{position:absolute;border-radius:10px;pointer-events:none;opacity:0;
+  box-shadow:0 0 0 9999px rgba(3,4,6,.6),0 0 0 2px var(--accent);
+  transition:opacity .4s var(--out),left .5s var(--out),top .5s var(--out),width .5s var(--out),height .5s var(--out)}
+.focus.on{opacity:1}
+.zone{position:absolute;z-index:2;border-radius:10px;cursor:pointer}
+.tag{position:absolute;z-index:4;left:0;top:0;display:flex;align-items:center;gap:8px;padding:5px 12px 5px 5px;border-radius:10px;
+  white-space:nowrap;font-size:13px;font-weight:700;letter-spacing:.02em;color:var(--text);pointer-events:none;
+  background:var(--plate);box-shadow:inset 0 0 0 1px var(--line-2),0 12px 24px -10px rgba(0,0,0,.9);
+  opacity:0;transition:opacity .3s var(--out),left .5s var(--out),top .5s var(--out)}
+.tag.on{opacity:1}
+.tag b{min-width:22px;height:22px;padding:0 5px;border-radius:6px;display:grid;place-items:center;font-size:12px;font-weight:800;
+  color:var(--ink);background:var(--accent);font-variant-numeric:tabular-nums}
+.jump{transition:opacity .3s var(--out)!important}
+.tap{display:none}
+@media (hover:none){.point{display:none}.tap{display:inline}}   /* "Tap anything…" where nothing can be pointed at */
+.legend{list-style:none;columns:1;column-gap:24px;margin-top:22px}
+.legend li{break-inside:avoid}
+.legend button{width:100%;display:grid;grid-template-columns:28px minmax(0,1fr);column-gap:12px;align-items:start;text-align:left;
+  padding:10px 10px 10px 8px;border-radius:10px;transition:background-color .3s}
+.legend button:hover,.legend button.on{background-color:rgba(255,255,255,.035)}
+.legend b{display:block;font-size:15px;line-height:1.3;color:var(--soft);transition:color .3s}
+.legend button.on b{color:var(--text)}
+.legend small{display:block;margin-top:2px;font-size:14px;line-height:1.4;color:var(--muted)}
+
+/* ── add: a little player on display 01, then the three kinds ── */
+.flow{display:grid;grid-template-columns:minmax(0,1fr);gap:22px}
+.steplist{list-style:none;border-top:1px solid var(--line)}
+.steplist li{border-bottom:1px solid var(--line)}
+.steplist button{position:relative;width:100%;display:grid;grid-template-columns:28px minmax(0,1fr);column-gap:14px;align-items:start;text-align:left;padding:15px 4px 15px 0}
+.steplist b{display:block;font-size:16px;line-height:1.3;color:var(--soft);transition:color .3s}
+.steplist small{display:block;margin-top:3px;font-size:14px;line-height:1.4;color:var(--muted)}
+.steplist button.on b{color:var(--text)}
+.steplist button::after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:2px;background:var(--accent);transform:scaleX(0);transform-origin:0 50%}
+.steplist button.on::after{animation:fill 3.6s linear forwards}
+.flow.paused .steplist button.on::after{animation-play-state:paused}
+.flow.stopped .steplist button.on::after{animation:none}    /* chosen by hand: no timer bar */
+@keyframes fill{to{transform:none}}
+.stage{order:-1}
+.stage .scr{position:relative;aspect-ratio:16/10;border-radius:5px;overflow:hidden;
+  background:radial-gradient(130% 100% at 30% 0,color-mix(in srgb,var(--violet) 22%,#10131a),#0a0c11 70%)}   /* display 01, lit */
+.stage img{position:absolute;inset:0;margin:auto;width:auto;max-width:84%;max-height:84%;border-radius:10px;
+  box-shadow:0 0 0 1px rgba(255,255,255,.1),0 24px 40px -18px rgba(0,0,0,.95);
+  opacity:0;visibility:hidden;transform:translateY(8px);transition:opacity .3s ease-in,transform .3s ease-in,visibility 0s .3s}
+.stage img.on{opacity:1;visibility:visible;transform:none;transition:opacity .6s var(--out),transform .8s var(--out),visibility 0s}
+.kinds{list-style:none;display:grid;grid-template-columns:minmax(0,1fr);column-gap:28px;border-top:1px solid var(--line)}
+.kinds li{display:flex;gap:14px;align-items:center;padding:14px 0;border-bottom:1px solid var(--line)}
+.kinds b{display:block;font-size:16px;line-height:1.35}
+.kinds small{display:block;margin-top:2px;font-size:15px;color:var(--muted)}
+
+/* ── place: a display on its stand; the frame is dragged across it ── */
+.place{display:grid;grid-template-columns:minmax(0,1fr);gap:40px;align-items:start}
+.rig{position:relative;padding-left:5%}
+.mon{position:relative;padding:9px;border-radius:9px;background:var(--bezel);
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.06),0 18px 36px -14px rgba(0,0,0,.85)}
+.mon .scr{position:relative;aspect-ratio:16/9;border-radius:3px;overflow:hidden}
+.mon .scr > img{width:100%;height:100%;object-fit:cover}
+.drag{position:absolute;top:0;bottom:0;left:66.4%;width:33.6%}
+.drag .frame{width:100%;height:100%}
+.cursor{position:absolute;left:50%;top:9%;width:24px;height:24px;filter:drop-shadow(0 2px 3px rgba(0,0,0,.6))}
+.neck{width:7%;height:30px;margin:0 auto;background:linear-gradient(#16181e,#0c0d11)}
+.base{width:30%;height:10px;margin:0 auto;border-radius:5px;background:#16181e;box-shadow:0 5px 9px rgba(0,0,0,.7)}
+.dlg{position:absolute;left:0;top:11%;width:31%;filter:drop-shadow(0 18px 22px rgba(0,0,0,.75))}
+.rig.run .drag{animation:drag 7s var(--out) 2}             /* twice each time it comes into view, then it rests */
+.rig.run .cursor{animation:grip 7s linear 2}
+@keyframes drag{0%,16%{transform:none}46%,64%{transform:translateX(-66.667%)}92%,100%{transform:none}}
+@keyframes grip{0%,12%{transform:none}16%,48%{transform:scale(.86)}52%,60%{transform:none}64%,92%{transform:scale(.86)}96%,100%{transform:none}}
+
+/* ── tune, launch, settings, keys, help: matter beside its picture ── */
+.side{display:grid;grid-template-columns:minmax(0,1fr);gap:36px}
+.ico{display:inline-grid;place-items:center;width:28px;height:26px;margin:0 2px;vertical-align:-5px;border-radius:9px;color:var(--text);box-shadow:inset 0 0 0 1px var(--line-2)}
+.ico .i{width:15px;height:15px}
+.ico.go{color:var(--accent)}
+.ico.go .i{width:13px;height:13px}
+.badge{display:inline-flex;align-items:center;height:22px;padding:0 8px;border-radius:6px;vertical-align:1px;white-space:nowrap;
+  font-size:11px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--amber);box-shadow:inset 0 0 0 1px rgba(255,178,36,.45)}   /* the app's own tag */
+
+/* profiles & displays */
+.pair{display:grid;gap:clamp(48px,7vh,72px)}
+.pair > div{display:grid;grid-template-columns:minmax(0,1fr);gap:24px;align-items:start}
+.pair h3 + *{margin-top:12px}
+
+/* ── extension: on the desk, the one place the manual asks you to install something ── */
+.band{border-top:0;padding-bottom:clamp(64px,9vh,96px);
+  border-image:linear-gradient(#1e1f23 1px,var(--desk) 1px calc(100% - 1px),#1e1f23 calc(100% - 1px)) fill 0//0 100vmax}
+.ext{display:grid;grid-template-columns:minmax(0,1fr);gap:44px}
+.install{list-style:none;counter-reset:s;display:flex;flex-direction:column;gap:16px;margin-top:32px;color:var(--prose);line-height:1.55}
+.install li{counter-increment:s;display:grid;grid-template-columns:30px minmax(0,1fr);column-gap:14px;align-items:start}
+.install li::before{content:counter(s);width:30px;height:28px;margin-top:-1px;border-radius:9px;display:grid;place-items:center;font-size:13px;font-weight:800;
+  color:var(--soft);box-shadow:inset 0 0 0 1px var(--line-2);font-variant-numeric:tabular-nums}
+.install .btn{margin-top:14px}
+.browser{position:relative;container-type:inline-size}
+.bwin{border-radius:10px;overflow:hidden;background:#1b1e26;box-shadow:0 0 0 1px rgba(255,255,255,.1),0 30px 60px -28px rgba(0,0,0,.95)}
+.tabs{display:flex;align-items:flex-end;padding:8px 10px 0;background:#15171c}
+.tabs .t{display:flex;align-items:center;gap:8px;height:28px;padding:0 14px;border-radius:9px 9px 0 0;background:#252832;
+  font:600 12px/1 "Segoe UI",system-ui,sans-serif;color:var(--soft);white-space:nowrap}
+.tabs .t i{width:8px;height:8px;border-radius:2px;background:var(--green)}
+.tabs svg{width:40px;height:10px;margin:0 2px 12px auto;fill:none;stroke:#7d8492;stroke-width:1.1}
+.tool{display:flex;align-items:center;gap:10px;padding:8px 10px 8px 12px;background:#252832}
+.url{flex:1;min-width:0;height:28px;display:flex;align-items:center;padding:0 12px;border-radius:14px;background:#1b1e26;
+  font:500 13px/1 "Segoe UI",system-ui,sans-serif;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pin{width:30px;height:30px;flex:none;border-radius:9px;display:grid;place-items:center;box-shadow:inset 0 0 0 1px rgba(62,232,155,.6)}
+.pin .logo{width:18px;height:18px;border-radius:5px}
+.bpage{height:calc(min(300px,58cqw) * 1.5 + 34px);padding:18px;display:flex;flex-direction:column;gap:12px}
+.video{position:relative;width:56%;height:52%;border-radius:8px;background:linear-gradient(135deg,#2f5d9c,#5a43a8 55%,var(--green))}
+.video::before{content:"LIVE";position:absolute;left:8px;top:8px;padding:3px 6px;border-radius:4px;background:var(--amber);color:var(--ink);font-size:10px;font-weight:800;letter-spacing:.1em}
+.video::after{content:"";position:absolute;left:50%;top:50%;margin:-11px 0 0 -6px;border-left:18px solid rgba(255,255,255,.85);border-top:11px solid transparent;border-bottom:11px solid transparent}
+.bln{height:10px;width:44%;border-radius:5px;background:rgba(255,255,255,.12)}
+.bln.s{width:28%}
+.popup{position:absolute;right:10px;top:88px;width:min(300px,58cqw);border-radius:12px;transform-origin:90% 0;
+  box-shadow:0 0 0 1px rgba(255,255,255,.12),0 30px 60px -20px rgba(0,0,0,.95)}
+
+/* ── settings ─────────────────────────────────────────────── */
+.sets{list-style:none;border-top:1px solid var(--line)}
+.sets li{display:grid;grid-template-columns:minmax(0,1fr) auto;column-gap:20px;align-items:start;padding:14px 0;border-bottom:1px solid var(--line)}
+.tog{position:relative;width:30px;height:18px;margin-top:2px;border-radius:9px;background:var(--accent)}   /* the app's switch, on */
+.tog::after{content:"";position:absolute;top:3px;right:3px;width:12px;height:12px;border-radius:50%;background:#fff}
+.seg{display:inline-flex;gap:2px;margin-top:8px;padding:3px;border-radius:9px;box-shadow:inset 0 0 0 1px var(--line-2)}
+.seg span{padding:4px 10px;border-radius:6px;font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.seg span:first-child{background:rgba(255,255,255,.08);color:var(--text)}
+.settings .tall img{max-height:760px;width:auto;margin:0 auto}
+.compare{--p:52%;user-select:none}
+.compare .top{position:absolute;inset:0;width:100%;height:100%;clip-path:inset(0 calc(100% - var(--p)) 0 0)}
+.compare input{position:absolute;inset:0;z-index:3;width:100%;height:100%;opacity:0;cursor:ew-resize;margin:0}
+.compare .bar{position:absolute;z-index:2;top:0;bottom:0;left:var(--p);width:2px;margin-left:-1px;background:var(--text);pointer-events:none}
+.compare .knob{position:absolute;top:50%;left:50%;width:40px;height:40px;margin:-20px 0 0 -20px;border-radius:11px;display:grid;place-items:center;
+  color:var(--text);background:var(--plate);box-shadow:inset 0 0 0 1px var(--line-2),0 10px 22px -8px rgba(0,0,0,.9)}
+.compare .knob .i{width:18px;height:18px}
+.compare:has(input:focus-visible) .knob{outline:2px solid var(--accent);outline-offset:3px}
+.lbl{position:absolute;z-index:2;bottom:12px;padding:5px 9px;border-radius:6px;background:var(--plate);box-shadow:inset 0 0 0 1px var(--line-2);
+  font-size:11px;font-weight:700;letter-spacing:.1em;color:var(--soft);pointer-events:none}
+.lbl.l{left:12px}.lbl.r{right:12px}
+
+/* ── keys ─────────────────────────────────────────────────── */
+.keys table{width:100%;border-collapse:collapse}
+.keys tr{border-top:1px solid var(--line)}
+.keys tr:last-child{border-bottom:1px solid var(--line)}
+.keys th{padding:12px 20px 12px 0;text-align:left;white-space:nowrap;vertical-align:middle;font-weight:400}
+.keys td{padding:12px 0;vertical-align:middle;color:var(--prose);font-size:16px;line-height:1.45}
+kbd{display:inline-flex;align-items:center;justify-content:center;min-width:34px;height:32px;padding:0 10px;border-radius:9px;
+  font:700 14px/1 "Schibsted Grotesk","Segoe UI",system-ui,sans-serif;color:var(--text);background:var(--plate);
+  box-shadow:inset 0 0 0 1px var(--line-2),inset 0 -2px 0 rgba(0,0,0,.45),0 4px 8px -4px rgba(0,0,0,.8)}
+kbd + kbd{margin-left:6px}
+.plus{margin:0 6px;color:var(--dim);font-weight:800}
+
+/* ── help ─────────────────────────────────────────────────── */
+.qa{border-bottom:1px solid var(--line)}
+.qa:first-child{border-top:1px solid var(--line)}
+.q{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:17px 0;font-weight:700;line-height:1.35;cursor:pointer;list-style:none}
+.q::-webkit-details-marker{display:none}
+.q:hover .pm{box-shadow:inset 0 0 0 1px rgba(255,255,255,.3)}
+.pm{width:28px;height:28px;flex:none;border-radius:9px;display:grid;place-items:center;color:var(--accent);box-shadow:inset 0 0 0 1px var(--line-2);transition:box-shadow .3s}
+.pm .i{width:15px;height:15px;transition:transform .35s var(--out)}
+.qa[open] .pm .i{transform:rotate(45deg)}                    /* + turns to × */
+.qa::details-content{block-size:0;overflow:hidden;transition:block-size .25s ease-in,content-visibility .25s allow-discrete}
+.qa[open]::details-content{block-size:auto;transition:block-size .45s var(--out),content-visibility .45s allow-discrete}
+.a{padding:0 44px 20px 0;color:var(--prose);line-height:1.6}
+
+/* ── footer: on the desk ──────────────────────────────────── */
+footer{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:16px 32px;margin-top:clamp(96px,13vh,150px);
+  padding:30px max(24px,calc((100% - var(--max)) / 2)) 40px;background:var(--desk);border-top:1px solid var(--line);color:var(--muted);font-size:14px}
+footer .brand{gap:10px}
+footer .logo{width:22px;height:22px;border-radius:7px}
+footer nav{display:flex;flex-wrap:wrap;gap:4px 24px}
+footer nav a{padding:6px 0;font-weight:600;color:var(--soft);text-decoration:underline;text-decoration-color:transparent;text-underline-offset:4px;transition:text-decoration-color .3s}
+footer nav a:hover{text-decoration-color:var(--accent)}
+
+/* ── the reading column decides its own columns ──────────── */
+@container doc (min-width:600px){
+  .steps{grid-template-columns:repeat(3,minmax(0,1fr));gap:32px}
+  .steps p{min-height:3em}                                  /* two lines, so the pictures share a top */
+  .legend{columns:2}
+  .kinds{grid-template-columns:repeat(3,minmax(0,1fr))}
+}
+@container doc (min-width:760px){
+  .flow{grid-template-columns:minmax(0,16.5rem) minmax(0,1fr);gap:40px;align-items:start}
+  .stage{order:0}
+  .place{grid-template-columns:minmax(0,1fr) minmax(0,1.6fr);gap:48px}
+  .side{grid-template-columns:minmax(0,.95fr) minmax(0,1fr);gap:48px;align-items:start}
+  .side.flip > figure{order:2}
+  .pair > div{grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:48px}
+  .ext{grid-template-columns:minmax(0,1fr) minmax(0,1.08fr);gap:56px;align-items:start}
+  .settings{grid-template-columns:minmax(0,.7fr) minmax(0,1fr)}
+}
+@media (min-width:1000px){
+  .band{border-image-outset:0 100vmax 0 32px}              /* beside the rail: the desk runs out to the right, never under the contents */
+}
+@container doc (min-width:840px){
+  .legend{columns:3}
+}
+
+/* ── smaller screens: the rail folds into a contents button ── */
+@media (max-width:999px){
+  .doc{grid-template-columns:minmax(0,1fr)}
+  .rail{position:static;height:auto;padding:22px 0 0}
+  .toc{margin:0}
+  .toc-h{display:none}
+  .toc-btn{position:fixed;z-index:30;right:max(16px,env(safe-area-inset-right));bottom:max(16px,env(safe-area-inset-bottom));
+    display:inline-flex;align-items:center;gap:9px;max-width:calc(100vw - 32px);height:46px;padding:0 16px 0 14px;border-radius:12px;
+    background:var(--plate);color:var(--soft);font-size:14px;font-weight:700;white-space:nowrap;
+    box-shadow:inset 0 0 0 1px var(--line-2),0 14px 28px -12px rgba(0,0,0,.95);transition:color .3s,box-shadow .3s}
+  .toc-btn:hover{color:var(--text);box-shadow:inset 0 0 0 1px rgba(62,232,155,.6),0 14px 28px -12px rgba(0,0,0,.95)}
+  .toc-btn .i{width:17px;height:17px}
+  .toc-now{overflow:hidden;text-overflow:ellipsis;color:var(--text)}
+  .toc-now:not(:empty)::before{content:"·";margin-right:9px;color:var(--dim)}
+  .toc-list{position:fixed;inset:auto max(16px,env(safe-area-inset-right)) calc(max(16px,env(safe-area-inset-bottom)) + 56px) auto;
+    width:min(300px,calc(100vw - 32px));max-height:calc(100dvh - 120px);padding:10px 10px 10px 14px;border-radius:14px;background:var(--plate);
+    box-shadow:inset 0 0 0 1px var(--line-2),0 24px 48px -16px rgba(0,0,0,.95);scrollbar-width:thin;
+    opacity:0;transform:translateY(8px);transition:opacity .18s ease-in,transform .18s ease-in,overlay .18s allow-discrete,display .18s allow-discrete}
+  .toc-list:not(:popover-open){display:none}
+  .toc-list:popover-open{opacity:1;transform:none;transition:opacity .3s var(--out),transform .45s var(--out),overlay .45s allow-discrete,display .45s allow-discrete}
+  @starting-style{.toc-list:popover-open{opacity:0;transform:translateY(8px)}}
+  .toc-list::before{left:14px;top:10px;bottom:10px}
+  .toc-list a{padding:11px 10px 11px 18px;font-size:16px}
+  .toc-list a::before{top:12px;bottom:12px}
+  main{padding-top:clamp(36px,7vh,64px)}
+  footer{padding-bottom:96px}
+}
+@media (max-width:640px){
+  .wrap{width:calc(100% - 40px)}
+  .btn{width:100%}
+  .install .btn{width:auto;align-self:start}
+  .shot{padding:6px;border-radius:10px}
+  .tour .shot{position:sticky;top:10px;z-index:3}            /* the picture stays in view while you go down the list */
+  .toc-now{display:none}                                    /* a compact button; the open list marks where you are */
+  .a{padding-right:0}
+  footer{flex-direction:column;align-items:flex-start}
+  footer nav a{padding:11px 0}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none!important;transition:none!important}
+  .lg-r{stroke-dashoffset:0}
+}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <mask id="cMask" maskUnits="userSpaceOnUse" x="0" y="0" width="40" height="40">
+      <path d="M29.9 12.5A12 12 0 1 0 29.9 27.5" fill="none" stroke="#fff" stroke-width="4.2" stroke-linecap="round"/>
+    </mask>
+    <symbol id="logo" viewBox="0 0 40 40">
+      <path class="lg-t" d="M29.9 12.5A12 12 0 1 0 29.9 27.5"/>
+      <path class="lg-r" mask="url(#cMask)" pathLength="100" d="M32 20A12 12 0 1 1 8 20A12 12 0 1 1 32 20"/>
+      <rect class="lg-c" x="16.5" y="16.5" width="7" height="7" rx="1.6"/>
+    </symbol>
+    <symbol id="i-play" viewBox="0 0 24 24"><path d="M8 5.5v13l11-6.5z" fill="currentColor" stroke="none"/></symbol>
+    <symbol id="i-list" viewBox="0 0 24 24"><path d="M9 6h11M9 12h11M9 18h11M4.5 6h.01M4.5 12h.01M4.5 18h.01"/></symbol>
+    <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+    <symbol id="i-out" viewBox="0 0 24 24"><path d="M14 4h6v6M20 4l-9 9M18 14v4a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4"/></symbol>
+    <symbol id="i-pencil" viewBox="0 0 24 24"><path d="M4 20h4L19 9a2.83 2.83 0 0 0-4-4L4 16z"/><path d="m13.5 6.5 4 4"/></symbol>
+    <symbol id="i-arrows" viewBox="0 0 24 24"><path d="m8 7-5 5 5 5M16 7l5 5-5 5"/></symbol>
+    <symbol id="i-app" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="3"/><path d="M3 9h18"/></symbol>
+    <symbol id="i-web" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></symbol>
+    <symbol id="i-cmd" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="3"/><path d="m7 10 3 2-3 2M12 15h5"/></symbol>
+    <symbol id="i-zoom" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="m20 20-4.4-4.4M11 8.5v5M8.5 11h5"/></symbol>
+    <symbol id="i-vol" viewBox="0 0 24 24"><path d="M11 5 6 9H3v6h3l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7M18.5 5.5a9 9 0 0 1 0 13"/></symbol>
+    <symbol id="i-appmode" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="3"/><path d="M3 9h18" stroke-dasharray="2 3"/></symbol>
+    <symbol id="i-lock" viewBox="0 0 24 24"><rect x="5" y="10" width="14" height="10" rx="2.5"/><path d="M8 10V7.5a4 4 0 0 1 8 0V10M12 14v2"/></symbol>
+    <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3 4 6v6c0 4.5 3.4 8.3 8 9 4.6-.7 8-4.5 8-9V6z"/></symbol>
+    <symbol id="i-bg" viewBox="0 0 24 24"><rect x="4" y="5" width="16" height="12" rx="2.5" stroke-dasharray="3 3"/><path d="M9 21h6"/></symbol>
+    <symbol id="i-click" viewBox="0 0 24 24"><path d="M5 3l12 7-5 1.3L9.5 17z"/><path d="M15 15l4 4"/></symbol>
+    <symbol id="i-name" viewBox="0 0 24 24"><path d="M4 7h16M4 12h10M4 17h7"/></symbol>
+    <symbol id="i-open" viewBox="0 0 24 24"><rect x="3" y="5" width="13" height="10" rx="2"/><path d="M8 19h11a2 2 0 0 0 2-2V9"/></symbol>
+    <symbol id="i-offline" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="12" rx="2.5"/><path d="M9 20h6M12 16v4M4 2l16 16"/></symbol>
+    <symbol id="i-refresh" viewBox="0 0 24 24"><path d="M3 12a9 9 0 0 1 15.5-6.2L21 8M21 3v5h-5M21 12a9 9 0 0 1-15.5 6.2L3 16M3 21v-5h5"/></symbol>
+  </defs>
+</svg>
+<a class="skip" href="#main">Skip to the manual</a>
+
+<div class="doc wrap" id="top">
+  <!-- the rail: the brand (it leads home) and the contents; the section being read is lit -->
+  <aside class="rail">
+    <div class="mast">
+      <a class="brand" href="../" title="Castra home"><span class="logo"><svg><use href="#logo"/></svg></span><span class="word">CASTRA<i>.</i></span></a>
+      <span class="crumb">Manual</span>
+    </div>
+    <nav class="toc" aria-label="Contents">
+      <button class="toc-btn" type="button" popovertarget="toc-list" aria-controls="toc-list"><svg class="i" aria-hidden="true"><use href="#i-list"/></svg><span>Contents</span><span class="toc-now"></span></button>
+      <p class="toc-h" aria-hidden="true">Contents</p>
+      <ol class="toc-list" id="toc-list" popover>
+        <li><a href="#tour">Tour</a></li>
+        <li><a href="#start">Start</a></li>
+        <li><a href="#add">Add</a></li>
+        <li><a href="#place">Place</a></li>
+        <li><a href="#tune">Tune</a></li>
+        <li><a href="#launch">Launch</a></li>
+        <li><a href="#displays">Profiles &amp; displays</a></li>
+        <li><a href="#extension">Browser extension</a></li>
+        <li><a href="#settings">Settings</a></li>
+        <li><a href="#keys">Shortcuts</a></li>
+        <li><a href="#help">Help</a></li>
+      </ol>
+    </nav>
+  </aside>
+
+  <main id="main">
+  <h1 class="vh">The Castra manual.</h1>
+
+  <!-- ── tour ────────────────────────────────────────────────── -->
+  <section id="tour" class="sec" aria-labelledby="tour-h">
+    <h2 id="tour-h">Find your way around.</h2>
+    <p class="lead"><span class="point">Point at</span><span class="tap">Tap</span> anything in the screenshot.</p>
+    <div class="tour">
+      <figure class="shot">
+        <div class="screen" id="tourShot">
+          <img src="img/main.webp" width="2480" height="1560" fetchpriority="high" alt="The main screen with numbered parts">
+          <div class="focus" id="focus"></div>
+          <div class="tag" id="tag" aria-hidden="true"><b></b><span></span></div>
+        </div>
+      </figure>
+      <ol class="legend" id="legend">
+        <li><button type="button" data-spot="profiles"><span class="num">1</span><span><b>Profiles</b><small>One tab per setup. Switch with a click.</small></span></button></li>
+        <li><button type="button" data-spot="search"><span class="num">2</span><span><b>Search</b><small>Ctrl K — launch or run anything by typing.</small></span></button></li>
+        <li><button type="button" data-spot="tools"><span class="num">3</span><span><b>Manual · bug report · settings</b><small>Top right, always there.</small></span></button></li>
+        <li><button type="button" data-spot="radar"><span class="num">4</span><span><b>Radar</b><small>Back to all displays.</small></span></button></li>
+        <li><button type="button" data-spot="chips"><span class="num">5</span><span><b>Display chips</b><small>Show one display's workspaces.</small></span></button></li>
+        <li><button type="button" data-spot="map"><span class="num">6</span><span><b>Display map</b><small>Your monitors in 3D — every window on them.</small></span></button></li>
+        <li><button type="button" data-spot="list"><span class="num">7</span><span><b>Workspaces</b><small>Everything this profile opens. Drag to reorder.</small></span></button></li>
+        <li><button type="button" data-spot="launch-one"><span class="num">8</span><span><b>Launch one</b><small>Opens just this workspace.</small></span></button></li>
+        <li><button type="button" data-spot="add"><span class="num">9</span><span><b>Add workspace</b><small>App, website or command.</small></span></button></li>
+        <li><button type="button" data-spot="cache"><span class="num">10</span><span><b>Clear cache</b><small>Hard-refresh stuck dashboard windows.</small></span></button></li>
+        <li><button type="button" data-spot="launch-all"><span class="num">11</span><span><b>Launch all</b><small>Opens the whole profile.</small></span></button></li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- ── start ───────────────────────────────────────────────── -->
+  <section id="start" class="sec" aria-labelledby="start-h">
+    <h2 id="start-h">Up and running in three steps.</h2>
+    <ol class="steps">
+      <li>
+        <h3>Add</h3>
+        <p>Pick an app, a website or a command.</p>
+        <figure class="fig"><img src="img/add_menu.webp" width="640" height="536" alt="The Add workspace menu: Application, Website, Command" loading="lazy" decoding="async"></figure>
+      </li>
+      <li>
+        <h3>Place</h3>
+        <p>Choose the display. Fine-tune the spot whenever you like.</p>
+        <figure class="fig"><img src="img/pick.webp" width="1112" height="702" alt="Choosing the display a workspace opens on" loading="lazy" decoding="async"></figure>
+      </li>
+      <li>
+        <h3>Launch</h3>
+        <p>Hit <b>Launch all</b>. Everything opens and lands in place.</p>
+        <figure class="key"><span class="crop"><img src="img/main.webp" width="2480" height="1560" alt="Launch all, bottom right in Castra, next to Clear cache" loading="lazy" decoding="async"></span></figure>
+      </li>
+    </ol>
+  </section>
+
+  <!-- ── add ─────────────────────────────────────────────────── -->
+  <section id="add" class="sec" aria-labelledby="add-h">
+    <h2 id="add-h">Add a workspace.</h2>
+    <p class="lead">A workspace is one window Castra opens for you.</p>
+    <div class="flow" id="flow">
+      <ol class="steplist">
+        <li><button class="on" type="button" data-i="0" aria-current="step"><span class="num">1</span><span><b>Add workspace</b><small>Bottom left → Website</small></span></button></li>
+        <li><button type="button" data-i="1"><span class="num">2</span><span><b>Pick the display</b><small>Click where it should open</small></span></button></li>
+        <li><button type="button" data-i="2"><span class="num">3</span><span><b>Paste the address</b><small>A name is optional</small></span></button></li>
+        <li><button type="button" data-i="3"><span class="num">4</span><span><b>Done</b><small>It's in the list</small></span></button></li>
+      </ol>
+      <div class="shot stage">
+        <div class="scr">
+          <img class="on" src="img/add_menu.webp" width="640" height="536" alt="Add workspace menu" loading="lazy" decoding="async">
+          <img src="img/pick.webp" width="1112" height="702" alt="Pick the display" loading="lazy" decoding="async">
+          <img src="img/ask.webp" width="1112" height="548" alt="Paste the website address" loading="lazy" decoding="async">
+          <img src="img/added.webp" width="1260" height="1184" alt="The new workspace in the list" loading="lazy" decoding="async">
+        </div>
+      </div>
+    </div>
+    <ul class="kinds">
+      <li><span class="box"><svg aria-hidden="true"><use href="#i-app"/></svg></span><span><b>Application</b><small>Any .exe or shortcut</small></span></li>
+      <li><span class="box"><svg aria-hidden="true"><use href="#i-web"/></svg></span><span><b>Website</b><small>Opens in your browser</small></span></li>
+      <li><span class="box"><svg aria-hidden="true"><use href="#i-cmd"/></svg></span><span><b>Command</b><small>Like Win+R: <code>slack://</code>, <code>calc</code></small></span></li>
+    </ul>
+  </section>
+
+  <!-- ── place ───────────────────────────────────────────────── -->
+  <section id="place" class="sec" aria-labelledby="place-h">
+    <h2 id="place-h">Exactly where you want it.</h2>
+    <p class="lead">Click the layout icon on a workspace.</p>
+    <div class="place">
+      <ul class="points">
+        <li><b>Drag or resize the frame</b> right on your display.</li>
+        <li><b>Or type it</b> — position and size to the pixel.</li>
+        <li><b>Switch display</b> at the top of the dialog.</li>
+      </ul>
+      <figure class="rig">
+        <div class="mon">
+          <div class="scr">
+            <img src="img/layout_desktop.webp" width="1600" height="900" alt="Your display while you place a window" loading="lazy" decoding="async">
+            <div class="drag">
+              <img class="frame" src="img/layout_frame.webp" width="537" height="900" alt="The window's frame, which you drag and resize" loading="lazy" decoding="async">
+              <svg class="cursor" viewBox="0 0 26 26" aria-hidden="true"><path d="M3 2 L3 21 L8.2 16.4 L11.6 24 L15 22.5 L11.7 15.1 L18.5 15.1 Z" fill="#fff" stroke="#0b0d12" stroke-width="1.6" stroke-linejoin="round"/></svg>
+            </div>
+          </div>
+        </div>
+        <div class="neck"></div><div class="base"></div>
+        <img class="dlg" src="img/layout_dialog.webp" width="880" height="992" alt="The Edit layout dialog with position and size" loading="lazy" decoding="async">
+      </figure>
+    </div>
+  </section>
+
+  <!-- ── tune ────────────────────────────────────────────────── -->
+  <section id="tune" class="sec" aria-labelledby="tune-h">
+    <h2 id="tune-h">Make each one behave.</h2>
+    <p class="lead">Click <span class="ico" role="img" aria-label="the pencil icon"><svg class="i"><use href="#i-pencil"/></svg></span> — or double-click a workspace.</p>
+    <div class="side">
+      <figure class="fig"><img src="img/edit_web.webp" width="1192" height="1370" alt="Editing a website workspace" loading="lazy" decoding="async"></figure>
+      <ul class="parts">
+        <li><span class="box"><svg aria-hidden="true"><use href="#i-zoom"/></svg></span><span><b>Zoom</b><small>Each website at its own zoom.</small></span></li>
+        <li><span class="box"><svg aria-hidden="true"><use href="#i-vol"/></svg></span><span><b>Volume</b><small>Quieter or louder, per workspace.</small></span></li>
+        <li><span class="box"><svg aria-hidden="true"><use href="#i-appmode"/></svg></span><span><b>App mode</b><small>A website without the browser toolbar.</small></span></li>
+        <li><span class="box"><svg aria-hidden="true"><use href="#i-lock"/></svg></span><span><b>Auto sign-in</b><small>Presses “Sign in” once your browser has filled in the saved password.</small></span></li>
+        <li><span class="box"><svg aria-hidden="true"><use href="#i-shield"/></svg></span><span><b>Run as administrator</b><small>One UAC prompt when you switch it on, silent after that.</small></span></li>
+        <li><span class="box"><svg aria-hidden="true"><use href="#i-bg"/></svg></span><span><b>Background only</b><small>Starts the app, places no window.</small></span></li>
+        <li><span class="box"><svg aria-hidden="true"><use href="#i-click"/></svg></span><span><b>Click sequence</b><small>Clicks for you after the window opens — a login, a tab, a button.</small></span></li>
+        <li><span class="box"><svg aria-hidden="true"><use href="#i-name"/></svg></span><span><b>Name</b><small>Leave it empty — Castra names it from the app or address.</small></span></li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ── launch ──────────────────────────────────────────────── -->
+  <section id="launch" class="sec" aria-labelledby="launch-h">
+    <h2 id="launch-h">One by one, each in its place.</h2>
+    <p class="lead"><span class="ico go" role="img" aria-label="The play button"><svg class="i"><use href="#i-play"/></svg></span> opens one workspace. <b>Launch all</b> opens the whole profile — the ring shows what's happening.</p>
+    <div class="side flip">
+      <figure class="fig"><img src="img/launching_list.webp" width="1260" height="1184" alt="Workspaces launching one after another: done, in progress, waiting" loading="lazy" decoding="async"></figure>
+      <ul class="parts">
+        <li><span class="box"><svg aria-hidden="true"><use href="#i-open"/></svg></span><span><b>Already open?</b><small>Start another copy, move the open window into place, or skip it — your call in Settings.</small></span></li>
+        <li><span class="box"><svg aria-hidden="true"><use href="#i-offline"/></svg></span><span><b>Display unplugged?</b><small>Its workspaces get a <span class="badge">Display offline</span> tag and open on your main display.</small></span></li>
+        <li><span class="box"><svg aria-hidden="true"><use href="#i-refresh"/></svg></span><span><b>Clear cache</b><small>Hard-refreshes stuck dashboard windows; each one stays covered until its page has reloaded.</small></span></li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ── profiles + displays ─────────────────────────────────── -->
+  <section id="displays" class="sec" aria-labelledby="displays-h">
+    <h2 id="displays-h">Different days, different setups.</h2>
+    <div class="pair">
+      <div>
+        <div>
+          <h3>Profiles</h3>
+          <p class="tx">One set of workspaces per occasion. Switch with the tabs on top; create, rename, duplicate or delete them with the slider icon next to the tabs.</p>
+        </div>
+        <figure class="fig"><img src="img/profiles.webp" width="1112" height="816" alt="Managing profiles" loading="lazy" decoding="async"></figure>
+      </div>
+      <div>
+        <div>
+          <h3>Displays</h3>
+          <ul class="points">
+            <li><b>Click a display</b> or its chip to see only its workspaces. The radar shows all again.</li>
+            <li><b>Right-click</b> a display to change its colour.</li>
+            <li><b>Hover a chip</b> — the real display lights up so you know which is which.</li>
+            <li><b>Plug or unplug</b> a monitor — Castra updates by itself.</li>
+          </ul>
+        </div>
+        <figure class="shot"><img src="img/filter.webp" width="2480" height="1560" alt="Display 03 selected: only its workspaces are listed" loading="lazy" decoding="async"></figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── extension: on the desk ──────────────────────────────── -->
+  <section id="extension" class="sec band" aria-labelledby="extension-h">
+    <h2 id="extension-h">The browser, under control.</h2>
+    <div class="ext">
+      <div>
+        <ul class="points">
+          <li><b>Volume per tab.</b> Castra's volume multiplies the site's own — YouTube at 50% and Castra at 40% plays at 20%.</li>
+          <li><b>Zoom that sticks,</b> even right after a restart.</li>
+          <li><b>Auto sign-in</b> for the workspaces where you switch it on.</li>
+          <li><b>A mixer in the toolbar</b> for every tab that plays sound.</li>
+        </ul>
+        <ol class="install">
+          <li><span>Open Castra in the Chrome Web Store and click <b>Add to Chrome</b>.<br>
+            <a class="btn primary" href="https://chromewebstore.google.com/detail/bgficbafjifdhlidbehldcppljnfdbnh" target="_blank" rel="noopener"><svg class="i" aria-hidden="true"><use href="#i-out"/></svg>Chrome Web Store</a></span></li>
+          <li><span>In Edge, allow extensions from other stores when it asks.</span></li>
+          <li><span><b>Pin</b> the Castra icon. Works in Chrome, Edge and Brave.</span></li>
+        </ol>
+      </div>
+      <figure class="browser">
+        <div class="bwin" aria-hidden="true">
+          <div class="tabs"><span class="t"><i></i>YouTube live</span><svg viewBox="0 0 36 9"><path d="M2 4.5h6M15 1.5h6v6h-6zM28 1.5l6 6M34 1.5l-6 6"/></svg></div>
+          <div class="tool"><span class="url">youtube.com/@yourchannel/live</span><span class="pin"><span class="logo"><svg><use href="#logo"/></svg></span></span></div>
+          <div class="bpage"><i class="video"></i><i class="bln"></i><i class="bln s"></i></div>
+        </div>
+        <img class="popup" src="img/popup.webp" width="680" height="1020" alt="The Castra mixer: volume of the current tab and of other tabs playing sound" loading="lazy" decoding="async">
+      </figure>
+    </div>
+  </section>
+
+  <!-- ── settings ────────────────────────────────────────────── -->
+  <section id="settings" class="sec" aria-labelledby="settings-h">
+    <h2 id="settings-h">Set it once, forget it.</h2>
+    <p class="lead">The gear icon, top right.</p>
+    <div class="side settings">
+      <figure class="fig tall"><img src="img/settings.webp" width="1112" height="2330" alt="The settings dialog" loading="lazy" decoding="async"></figure>
+      <div>
+        <ul class="sets">
+          <li><span><b>Start with Windows</b><small>…and launch a profile right after you sign in.</small></span><span class="tog" aria-hidden="true"></span></li>
+          <li><span><b>Keep running in the tray</b><small>Closing the window keeps Castra — and volume, zoom, sign-in — working.</small></span><span class="tog" aria-hidden="true"></span></li>
+          <li><span><b>If an app is already running</b><span class="seg"><span>New copy</span><span>Move it</span><span>Skip</span></span></span></li>
+          <li><span><b>Export · Import</b><small>All profiles in one file — a backup, or a setup to share with a colleague.</small></span></li>
+          <li><span><b>Reduce animations</b><small>Still logo and radar, flat display map.</small></span><span class="tog" aria-hidden="true"></span></li>
+          <li><span><b>Browser &amp; profile</b><small>Which browser — and which of its profiles — websites open in.</small></span></li>
+        </ul>
+        <figure class="shot compare" id="compare" style="margin-top:36px">
+          <div class="screen">
+            <img src="img/main_light.webp" width="2480" height="1560" alt="Castra in the light theme" loading="lazy" decoding="async">
+            <img class="top" src="img/main_flat.webp" width="2480" height="1560" alt="Castra in the dark theme" loading="lazy" decoding="async">
+            <span class="lbl l" aria-hidden="true">DARK</span><span class="lbl r" aria-hidden="true">LIGHT</span>
+            <span class="bar"><span class="knob"><svg class="i" aria-hidden="true"><use href="#i-arrows"/></svg></span></span>
+            <input type="range" min="0" max="100" value="52" aria-label="Compare dark and light theme">
+          </div>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── keys ────────────────────────────────────────────────── -->
+  <section id="keys" class="sec" aria-labelledby="keys-h">
+    <h2 id="keys-h">Faster with the keyboard.</h2>
+    <div class="side keys">
+      <table>
+        <tbody>
+          <tr><th scope="row"><kbd>Ctrl</kbd><span class="plus">+</span><kbd>K</kbd></th><td>Launch anything or run a command by typing.</td></tr>
+          <tr><th scope="row"><kbd>F1</kbd></th><td>Opens this manual.</td></tr>
+          <tr><th scope="row"><kbd>Esc</kbd></th><td>Closes the open dialog.</td></tr>
+          <tr><th scope="row"><kbd>↑</kbd><kbd>↓</kbd><kbd>↵</kbd></th><td>Pick and run in the search.</td></tr>
+          <tr><th scope="row"><kbd>Drag</kbd></th><td>Reorder workspaces — that's the launch order too.</td></tr>
+          <tr><th scope="row"><kbd>2× click</kbd></th><td>Edit a workspace.</td></tr>
+          <tr><th scope="row"><kbd>Right click</kbd></th><td>A display: change its colour.</td></tr>
+          <tr><th scope="row"><kbd>Hover</kbd></th><td>A workspace: its window lights up on the map.</td></tr>
+        </tbody>
+      </table>
+      <figure class="fig"><img src="img/palette.webp" width="1208" height="918" alt="The search: launch a workspace or run a command" loading="lazy" decoding="async"></figure>
+    </div>
+  </section>
+
+  <!-- ── help ────────────────────────────────────────────────── -->
+  <section id="help" class="sec" aria-labelledby="help-h">
+    <h2 id="help-h">Something off?</h2>
+    <div class="side help">
+      <div class="faq">
+        <details class="qa" name="faq"><summary class="q">Volume or zoom doesn't change<span class="pm"><svg class="i" aria-hidden="true"><use href="#i-plus"/></svg></span></summary><p class="a">Install the <a href="#extension">browser extension</a>, then reload the page. The status at the bottom says <b>Extension linked</b> when it's on.</p></details>
+        <details class="qa" name="faq"><summary class="q">A window opens in the wrong spot<span class="pm"><svg class="i" aria-hidden="true"><use href="#i-plus"/></svg></span></summary><p class="a">Click the layout icon on the workspace and place it again — drag the frame or type the position.</p></details>
+        <details class="qa" name="faq"><summary class="q">An app asks for administrator rights every time<span class="pm"><svg class="i" aria-hidden="true"><use href="#i-plus"/></svg></span></summary><p class="a">Switch on <b>Run as administrator</b> for it: one UAC prompt now, then it starts silently.</p></details>
+        <details class="qa" name="faq"><summary class="q">Websites open in the wrong browser profile<span class="pm"><svg class="i" aria-hidden="true"><use href="#i-plus"/></svg></span></summary><p class="a">Settings → <b>Browser profile</b>.</p></details>
+        <details class="qa" name="faq"><summary class="q">Auto sign-in didn't press the button<span class="pm"><svg class="i" aria-hidden="true"><use href="#i-plus"/></svg></span></summary><p class="a">Your browser has to fill in the saved password by itself, and the window has to be visible on screen. It tries once per window — sign in by hand if it didn't work.</p></details>
+        <details class="qa" name="faq"><summary class="q">Something else<span class="pm"><svg class="i" aria-hidden="true"><use href="#i-plus"/></svg></span></summary><p class="a">The bug icon, top right: describe it, paste a screenshot, send. It goes straight to the developer.</p></details>
+      </div>
+      <figure class="fig"><img src="img/bug.webp" width="1192" height="1172" alt="Reporting a bug with screenshots" loading="lazy" decoding="async"></figure>
+    </div>
+  </section>
+  </main>
+</div>
+
+<footer>
+  <div class="brand"><span class="logo"><svg><use href="#logo"/></svg></span><span>© 2026 Castra</span></div>
+  <nav aria-label="More"><a href="../">Home</a><a href="../privacy/">Privacy</a><a href="https://chromewebstore.google.com/detail/bgficbafjifdhlidbehldcppljnfdbnh" target="_blank" rel="noopener">Browser extension</a></nav>
+</footer>
+
+<script src="img/hotspots.js"></script>
+<script>
+(() => {
+  "use strict";
+  const $ = (s, el = document) => el.querySelector(s), $$ = (s, el = document) => [...el.querySelectorAll(s)];
+  const still = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const watch = (el, fn, opts) => { if (el) new IntersectionObserver((es, io) => es.forEach(e => fn(e, io)), opts).observe(el); };
+
+  /* contents: the section being read is lit; on phones the list opens from the button */
+  const list = $("#toc-list"), links = $$("#toc-list a"), now = $(".toc-now");
+  const secs = links.map(a => document.getElementById(a.hash.slice(1)));
+  let lit = -2, queued = false;
+  function spy() {
+    queued = false;
+    const line = innerHeight * .3, root = document.documentElement;
+    let i = -1;
+    secs.forEach((s, k) => { if (s && s.getBoundingClientRect().top <= line) i = k; });
+    if (scrollY > 0 && innerHeight + scrollY >= root.scrollHeight - 2) i = secs.length - 1;   // the last one, at the very end
+    if (i === lit) return;
+    lit = i;
+    links.forEach((a, k) => (k === i ? a.setAttribute("aria-current", "location") : a.removeAttribute("aria-current")));
+    if (now) now.textContent = i >= 0 ? links[i].textContent : "";
+  }
+  addEventListener("scroll", () => { if (!queued) { queued = true; requestAnimationFrame(spy); } }, { passive: true });
+  addEventListener("resize", spy);
+  spy();
+  const fold = () => { try { list.hidePopover(); } catch (e) {} };
+  links.forEach(a => a.addEventListener("click", fold));
+  matchMedia("(min-width: 1000px)").addEventListener("change", fold);
+
+  /* tour: point at a control (or a line in the list) — it's lit up and labelled.
+     Nothing lights by itself: a mouse lights a part only once it has really moved since the page last
+     scrolled (a page scrolling under a resting pointer is not pointing); a tap toggles; keyboard focus lights */
+  const shot = $("#tourShot"), focus = $("#focus"), tag = $("#tag"), legend = $("#legend");
+  const H = window.HOTSPOTS || {};
+  if (shot && legend) {
+    const items = $$("button", legend);
+    const SPOTS = items.map(b => [b.dataset.spot, $("b", b).textContent]);
+    let cur = -1, parked = true;
+    addEventListener("scroll", () => { parked = true; }, { passive: true });
+    const pointing = e => {                                    // a mouse that has moved since the last scroll
+      if (e.pointerType !== "mouse") return false;
+      if (e.movementX || e.movementY) parked = false;
+      return !parked;
+    };
+    const hover = (el, i) => el.addEventListener("pointermove", e => { if (pointing(e) && cur !== i) show(i); });
+    const PAD = 0.9;                                           // % around the control
+    const area = k => { const s = H[k]; return { l: s.l - PAD, t: s.t - PAD * 1.6, w: s.w + PAD * 2, h: s.h + PAD * 3.2 }; };
+    // zones over the real controls: bigger areas first, so smaller ones inside them (▶ in the list) stay on top
+    SPOTS.map((x, i) => [x, i]).filter(([[k]]) => H[k]).sort(([[a]], [[b]]) => H[b].w * H[b].h - H[a].w * H[a].h)
+      .forEach(([[k, t], i]) => {
+        const z = document.createElement("button"), r = area(k);
+        z.type = "button"; z.className = "zone"; z.tabIndex = -1; z.setAttribute("aria-label", t);
+        Object.assign(z.style, { left: r.l + "%", top: r.t + "%", width: r.w + "%", height: r.h + "%" });
+        hover(z, i);
+        z.onclick = () => toggle(i);
+        shot.appendChild(z);
+      });
+    items.forEach((b, i) => {                                 // keyboard focus lights it; a tap or click toggles it
+      hover(b, i);
+      b.onfocus = () => { if (b.matches(":focus-visible")) show(i); };
+      b.onclick = () => toggle(i);
+      b.onblur = hide;
+    });
+    function show(i) {
+      if (!H[SPOTS[i][0]]) return;
+      cur = i;
+      const r = area(SPOTS[i][0]), first = !focus.classList.contains("on");
+      if (first) { focus.classList.add("jump"); tag.classList.add("jump"); }     // appear in place, then glide between parts
+      Object.assign(focus.style, { left: r.l + "%", top: r.t + "%", width: r.w + "%", height: r.h + "%" });
+      // label: a tall part (over 30 % of the picture) carries it inside its outline, in the bottom corner on its
+      // side of the picture, so nothing in the part is covered; others get it above, else below, else beside,
+      // kept within the picture. Only when there's no room anywhere does it go inside the top corner.
+      $("b", tag).textContent = i + 1;
+      $("span", tag).textContent = SPOTS[i][1];
+      const W = shot.clientWidth, Hh = shot.clientHeight, tw = tag.offsetWidth, th = tag.offsetHeight, gap = 8, m = 6, inset = 10;
+      const x = r.l / 100 * W, y = r.t / 100 * Hh, right = (r.l + r.w) / 100 * W, bottom = (r.t + r.h) / 100 * Hh;
+      const clampX = v => Math.max(m, Math.min(v, W - tw - m)), clampY = v => Math.max(m, Math.min(v, Hh - th - m));
+      let left, top;
+      if (r.h > 30) { top = clampY(bottom - th - inset); left = clampX(r.l + r.w / 2 < 50 ? x + inset : right - tw - inset); }
+      else if (y - th - gap >= m) { left = clampX(x); top = y - th - gap; }
+      else if (bottom + gap + th <= Hh - m) { left = clampX(x); top = bottom + gap; }
+      else if (x - gap - tw >= m) { left = x - gap - tw; top = clampY(y); }
+      else if (right + gap + tw <= W - m) { left = right + gap; top = clampY(y); }
+      else { left = clampX(x + gap); top = clampY(y + gap); }
+      tag.style.left = left + "px"; tag.style.top = top + "px";
+      if (first) { void focus.offsetWidth; focus.classList.remove("jump"); tag.classList.remove("jump"); }
+      focus.classList.add("on"); tag.classList.add("on");
+      items.forEach((d, k) => d.classList.toggle("on", k === i));
+    }
+    function hide() { cur = -1; focus.classList.remove("on"); tag.classList.remove("on"); items.forEach(x => x.classList.remove("on")); }
+    function toggle(i) { if (cur === i && focus.classList.contains("on") && !matchMedia("(hover: hover)").matches) hide(); else show(i); }   // a second tap puts it out
+    const away = e => { if (e.pointerType === "mouse") hide(); };
+    shot.addEventListener("pointerleave", away);
+    legend.addEventListener("pointerleave", away);
+    addEventListener("resize", () => { if (cur >= 0 && focus.classList.contains("on")) show(cur); });
+  }
+
+  /* add-a-workspace player: one step at a time while it's in view; hover holds it;
+     a click or keyboard focus on a step stops it for good, so a chosen step stays put */
+  const flow = $("#flow");
+  if (flow) {
+    const chips = $$(".steplist button", flow), frames = $$(".stage img", flow);
+    let fi = 0, ft = null, seen = false, held = false, stopped = false;
+    const DUR = 3600;
+    function step(i) {
+      fi = i;
+      chips.forEach((c, k) => { c.classList.remove("on"); k === i ? c.setAttribute("aria-current", "step") : c.removeAttribute("aria-current"); });
+      void flow.offsetWidth;                                    // restart the bar's fill
+      chips[i].classList.add("on");
+      frames.forEach((f, k) => f.classList.toggle("on", k === i));
+      clearTimeout(ft);
+      if (!still && seen && !held && !stopped) ft = setTimeout(() => step((fi + 1) % frames.length), DUR);
+    }
+    const stop = () => { stopped = true; clearTimeout(ft); flow.classList.add("stopped"); };
+    chips.forEach((c, i) => {
+      c.addEventListener("click", () => { stop(); step(i); });
+      c.addEventListener("focus", () => { if (c.matches(":focus-visible")) stop(); });
+    });
+    flow.addEventListener("mouseenter", () => { held = true; flow.classList.add("paused"); clearTimeout(ft); });
+    flow.addEventListener("mouseleave", () => { held = false; flow.classList.remove("paused"); step(fi); });
+    watch(flow, e => { seen = e.isIntersecting; if (seen) step(fi); else clearTimeout(ft); }, { threshold: .4 });
+  }
+
+  if (!still) {
+    /* place: the frame is dragged across the display only while it's on screen */
+    const rig = $(".rig");
+    watch(rig, e => rig.classList.toggle("run", e.isIntersecting), { threshold: .25 });
+    /* start: the Launch all key is pressed once */
+    const key = $(".key");
+    watch(key, (e, io) => { if (e.isIntersecting) { io.disconnect(); setTimeout(() => key.classList.add("pressed"), 350); } }, { threshold: 1 });
+    /* extension: the mixer drops from its toolbar icon the first time the browser comes into view */
+    const browser = $(".browser"), pop = $(".popup");
+    if (pop && pop.animate) watch(browser, (e, io) => {
+      if (!e.isIntersecting) return;
+      io.disconnect();
+      pop.animate([{ opacity: 0, transform: "translateY(-10px) scale(.98)" }, { opacity: 1, transform: "none" }],
+                  { duration: 700, easing: "cubic-bezier(.16,1,.3,1)" });
+    }, { rootMargin: "0px 0px -12% 0px" });
+  }
+
+  /* help: one answer open at a time (the browser does it where it knows <details name>) */
+  const qas = $$(".faq details");
+  qas.forEach(d => d.addEventListener("toggle", () => { if (d.open) qas.forEach(o => { if (o !== d) o.open = false; }); }));
+
+  /* dark ↔ light */
+  const cmp = $("#compare");
+  if (cmp) {
+    const rng = $("input", cmp), set = () => cmp.style.setProperty("--p", rng.value + "%");
+    rng.addEventListener("input", set); set();
+  }
+})();
+</script>
+</body>
+</html>

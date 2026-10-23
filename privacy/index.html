@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Privacy — Castra</title>
+<meta name="description" content="Castra and its browser extension collect no personal data. Everything stays on your PC.">
+<meta name="theme-color" content="#06070a">
+<link rel="icon" href="../assets/logo.svg" type="image/svg+xml">
+<link rel="icon" href="../assets/favicon.ico" sizes="any">
+<link rel="preload" href="../assets/SchibstedGrotesk.ttf" as="font" type="font/ttf" crossorigin>
+<link rel="stylesheet" href="../assets/site.css?v=11">
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <mask id="cMask" maskUnits="userSpaceOnUse" x="0" y="0" width="40" height="40">
+      <path d="M29.9 12.5A12 12 0 1 0 29.9 27.5" fill="none" stroke="#fff" stroke-width="4.2" stroke-linecap="round"/>
+    </mask>
+    <symbol id="logo" viewBox="0 0 40 40">
+      <path class="lg-t" d="M29.9 12.5A12 12 0 1 0 29.9 27.5"/>
+      <path class="lg-r" mask="url(#cMask)" pathLength="100" d="M32 20A12 12 0 1 1 8 20A12 12 0 1 1 32 20"/>
+      <rect class="lg-c" x="16.5" y="16.5" width="7" height="7" rx="1.6"/>
+    </symbol>
+  </defs>
+</svg>
+
+<header class="top wrap">
+  <a class="brand" href="../" aria-label="Castra — home"><span class="logo"><svg><use href="#logo"/></svg></span><span class="word">CASTRA<i>.</i></span></a>
+</header>
+
+<main class="prose wrap">
+  <h1>Your data stays with you.</h1>
+  <p>Castra and the Castra browser extension collect no personal data. There are no accounts, no analytics and no tracking. This page explains the few things that do leave your PC — and when.</p>
+
+  <h2>The Castra app</h2>
+  <ul>
+    <li>Your profiles, workspaces and settings are stored <b>only on your PC</b>, in <code>Documents\Castra</code>.</li>
+    <li><b>Updates:</b> each time it starts, Castra asks GitHub's public API whether a newer version exists. If you choose to update, the installer is downloaded from GitHub. Nothing about you or your setup is sent.</li>
+    <li><b>Bug reports:</b> sent only when you press <b>Send report</b>. They contain exactly what you type (your name and message) and the screenshots you attach, and they reach the developer through Discord.</li>
+  </ul>
+
+  <h2>The browser extension</h2>
+  <ul>
+    <li>It talks <b>only to the Castra app on the same computer</b> (<code>ws://127.0.0.1</code>). Nothing is sent to any server.</li>
+    <li>It stores each workspace's volume and zoom in the browser's own storage, so they apply on the next page load.</li>
+    <li><b>Auto sign-in</b> (only for the workspaces where you switch it on) checks whether your browser has filled in the saved password, then presses the Sign in button. The password itself is never read, stored or sent.</li>
+  </ul>
+
+  <h2>Questions</h2>
+  <p>Use the bug button in Castra — it reaches the developer directly.</p>
+  <p class="date">Last updated: October 2026</p>
+</main>
+
+<footer class="edge">
+  <div class="brand small"><span class="logo"><svg><use href="#logo"/></svg></span><span>© 2026 Castra</span></div>
+  <nav aria-label="More"><a href="../">Home</a><a href="../manual/">Manual</a><a href="https://chromewebstore.google.com/detail/bgficbafjifdhlidbehldcppljnfdbnh" target="_blank" rel="noopener">Browser extension</a></nav>
+</footer>
+</body>
+</html>
