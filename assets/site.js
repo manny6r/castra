@@ -22,6 +22,7 @@
     const v = $("video", tour);
     $$("a.watch").forEach(a => a.addEventListener("click", e => {
       e.preventDefault();
+      if (!v.poster) v.poster = v.dataset.poster;   // fetched only by those who open the tour
       tour.showModal();
       v.play().catch(() => {});
     }));
