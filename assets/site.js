@@ -36,7 +36,7 @@
   /* the app up close: point at a part (or a line in the legend) and it is lit and named, as in the manual.
      Nothing is lit until you point: the whole window stays visible when you arrive */
   const shot = $("#appShot"), focus = $("#appFocus"), ftag = $("#appTag"), legend = $("#appLegend");
-  const SPOT = { profiles: { l: 17.26, t: 2.69, w: 21.61, h: 4.87 }, map: { l: 1.2, t: 10.8, w: 45.8, h: 75.7 },
+  const SPOT = { profiles: { l: 16.77, t: 2.69, w: 21.61, h: 4.87 }, map: { l: 1.2, t: 10.8, w: 45.8, h: 75.7 },
                  list: { l: 48.1, t: 10.8, w: 50.75, h: 75.7 }, back: { l: 48.1, t: 90.3, w: 20.8, h: 5.7 },
                  "launch-all": { l: 82.66, t: 90, w: 14.92, h: 6.41 } };       // % of the screenshot, as measured on it
   if (shot && legend) {
