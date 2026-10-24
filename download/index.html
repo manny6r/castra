@@ -12,7 +12,7 @@
 <link rel="preload" href="../assets/SchibstedGrotesk.ttf" as="font" type="font/ttf" crossorigin>
 <link rel="stylesheet" href="../assets/site.css?v=11">
 <!-- without JavaScript: the current installer after a moment -->
-<noscript><meta http-equiv="refresh" content="1; url=https://github.com/manny6r/castra/releases/download/v2.0.2/Castra_Setup_v2.0.2.exe"></noscript>
+<noscript><meta http-equiv="refresh" content="1; url=https://github.com/manny6r/castra/releases/download/v2.0.3/Castra_Setup_v2.0.3.exe"></noscript>
 </head>
 <body>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
@@ -53,7 +53,7 @@
 /* the newest installer itself: the browser downloads it and this page stays */
 (() => {
   const REPO = "manny6r/castra";
-  const CURRENT = "https://github.com/manny6r/castra/releases/download/v2.0.2/Castra_Setup_v2.0.2.exe";
+  const CURRENT = "https://github.com/manny6r/castra/releases/download/v2.0.3/Castra_Setup_v2.0.3.exe";
   const go = url => { location.replace(url); };
   fetch(`https://api.github.com/repos/${REPO}/releases/latest`)
     .then(r => (r.ok ? r.json() : null))
