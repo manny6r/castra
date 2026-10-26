@@ -31,30 +31,21 @@
     tour.addEventListener("close", () => v.pause());                              // Esc, the button or the backdrop
 
     /* captions drawn by the page: browsers draw them in the system's caption style (on Windows a
-       black box) and ignore the page's ::cue rules, so the box hid the bottom of the app. The CC
-       menu still switches them; in full screen the browser shows its own (nothing can go over it) */
+       black box) and ignore the page's ::cue rules, so the box hid the bottom of the app. The track
+       stays "showing", so the player's Captions menu tells the truth and switches them; site.css hides
+       the browser's own rendering except in full screen, where nothing from the page can go over it */
     const cc = $(".cc", tour), track = v.textTracks && v.textTracks[0];
     if (cc && track) {
-      let on = track.mode !== "disabled";
       const full = () => document.fullscreenElement === v || document.webkitFullscreenElement === v;
       const draw = () => {
-        const cue = on && !full() && track.activeCues && track.activeCues[0];
+        const cue = track.mode === "showing" && !full() && track.activeCues && track.activeCues[0];
         cc.textContent = cue ? cue.text : "";
       };
-      const sync = () => {
-        const want = !on ? "disabled" : full() ? "showing" : "hidden";   // hidden: cues run, the page draws them
-        if (track.mode !== want) track.mode = want;
-        draw();
-      };
       track.addEventListener("cuechange", draw);
-      v.textTracks.addEventListener("change", () => {
-        if (track.mode === "showing" && !full()) on = true;                // picked in the CC menu
-        else if (track.mode === "disabled") on = false;                    // "Off" in the CC menu
-        sync();
-      });
-      document.addEventListener("fullscreenchange", sync);
-      document.addEventListener("webkitfullscreenchange", sync);
-      sync();
+      v.textTracks.addEventListener("change", draw);                       // On / Off in the player's menu
+      document.addEventListener("fullscreenchange", draw);
+      document.addEventListener("webkitfullscreenchange", draw);
+      draw();
     }
   }
 
